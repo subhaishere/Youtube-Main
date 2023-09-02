@@ -1,4 +1,4 @@
-const apiKey = `AIzaSyBM1_C40cespNthMdFZHgn6-6VwZ8X4mlo`;
+const apiKey = `AIzaSyAIWqxvAZeutxufPchM0WwC0uGFg3vVjVU`;
 const video_suggestion_url = `https://www.googleapis.com/youtube/v3/videos?`;
 const chanels_url = 'https://www.googleapis.com/youtube/v3/channels?'
 
@@ -15,12 +15,9 @@ async function fetchSuggested(){
     for (const i in video_suggestions.items) {
         getChanelIcon(video_suggestions.items[i]);
     }
-        // for (let i = 0; i < video_suggestions.length; i++) {
-        //     const element = video_suggestions[i];
-        //     console.log(element);
-        // }
 }
 fetchSuggested();
+
 async function getChanelIcon(video_info){
     console.log(video_info);
     let response = await fetch(chanels_url + new URLSearchParams({
@@ -33,7 +30,7 @@ async function getChanelIcon(video_info){
     makeVideos(video_info);
     
 }
-// fetchSuggested();
+
 function formatNumber(num, precision = 2) {
     const map = [
       { suffix: 'T', threshold: 1e12 },
@@ -52,6 +49,8 @@ function formatNumber(num, precision = 2) {
   
     return num;
   }
+
+  
   function makeDate(date){
     console.log(typeof date);
     let compactDate = date.split("T");
@@ -65,27 +64,35 @@ function formatNumber(num, precision = 2) {
     return stringdate;
   }
   
-  function makeVideos(video_info){
-      console.log(video_info);
-      const video_cards = document.createElement("div");
-      let count = formatNumber(video_info.statistics.viewCount);
-      // const date = makeDate();
-      
-      video_cards.className = "videos";
-      let my_str = `<a id="${video_info.id}" href="youtube.html?vid_id=@${video_info.id}">
-      <div class="thumbnail"><img style="border-radius:25px;" src="${video_info.snippet.thumbnails.high.url}" alt="thumbnail"></div>
-      <div class="title-chanel">
-      <div class="chanel-logo"><img src="${video_info.channel_Thumbnail}" alt="chanel-logo"></div>
-      <div class="video-title">${video_info.snippet.title}</div>
-      </div>
-      <div class="chanel-stat">
-      <div class="chanel-name">${video_info.snippet.channelTitle}</div>
-      <div>
-      <span class="view-count">${count} |</span>
-      <span class="published">${makeDate(video_info.snippet.publishedAt)}</span>
-      </div>
-      </div>
-      </a>`
-      video_cards.innerHTML = my_str;
-      video_container.appendChild(video_cards);
-    }
+  function makeVideos(video_info) {
+    console.log(video_info);
+    const video_cards = document.createElement("div");
+    let count = formatNumber(video_info.statistics.viewCount);
+    video_cards.className = "videos";
+    let my_str = `
+      <a href="https://www.youtube.com/watch?v=${video_info.id}">
+        <div class="thumbnail">
+          <img style="border-radius:25px;" src="${video_info.snippet.thumbnails.high.url}" alt="thumbnail">
+        </div>
+        <div class="title-chanel">
+          <div class="chanel-logo">
+            <img src="${video_info.channel_Thumbnail}" alt="channel-logo">
+          </div>
+          <div class="video-title">${video_info.snippet.title}</div>
+        </div>
+        <div class="chanel-stat">
+          <div class="chanel-name">${video_info.snippet.channelTitle}</div>
+          <div>
+            <span class="view-count">${count} |</span>
+            <span class="published">${makeDate(video_info.snippet.publishedAt)}</span>
+          </div>
+        </div>
+      </a>
+    `;
+    video_cards.innerHTML = my_str;
+    video_container.appendChild(video_cards);
+  }
+  
+
+
+  
